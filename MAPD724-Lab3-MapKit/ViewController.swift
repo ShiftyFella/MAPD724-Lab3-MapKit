@@ -12,14 +12,23 @@ import MapKit
 class ViewController: UIViewController {
 
     //ACTIONS
-    @IBAction func changeMapType(_ sender: UISegmentedControl) {
+    @IBAction func changeMapType(_ sender: UISegmentedControl) {//change map view type
+        mapView.mapType = MKMapType.init(rawValue: UInt(sender.selectedSegmentIndex)) ?? .standard
+
     }
     
     @IBAction func addLocation(_ sender: UIBarButtonItem) {
     }
+    
+    func centerMap(coords: CLLocation) { //center map on location with radius of 1.2 Km
+        let region = MKCoordinateRegionMakeWithDistance(coords.coordinate, radius, radius)
+        
+        mapView.setRegion(region, animated: true)
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        centerMap(coords: startingCoords)
     }
 
     override func didReceiveMemoryWarning() {
@@ -30,5 +39,7 @@ class ViewController: UIViewController {
     //OUTLETS
     @IBOutlet weak var mapView: MKMapView!
     
+    let startingCoords = CLLocation(latitude: 43.6514990607, longitude: -79.3834667995)
+    let radius: CLLocationDistance = 1200
 }
 
